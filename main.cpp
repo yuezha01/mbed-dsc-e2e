@@ -224,7 +224,7 @@ int main(void) {
     data_lr->init(input_shape_lr);
     //buff.copyTo(tmp);
     float* data_ptr_lr = (float*) data_lr->write<float>(0, 0);
-    data_ptr_lr[0] = 1.0;
+    data_ptr_lr[0] = 3.0;
     data_ptr_lr[1] = 2.0;
     
     Context ctx_lr;
@@ -232,13 +232,10 @@ int main(void) {
     ctx_lr.eval();
     S_TENSOR prediction_lr = ctx_lr.get({"y_pred:0"});
     printf("Call lr model!!!.\n");
-    int result_lr = *(prediction_lr->read<int>(0,0));
-    //float result = *(prediction->read<float>(0,0));
+    float result_lr = *(prediction_lr->read<float>(0,0));
     printf("Result is here!!!.\n");
-    printf("result: %d\n", result_lr);
+    printf("result: %f\n", result_lr);
     
-    
-
     printf("Checking Storage is Formatted\r\n");
     int err = fs.mount(&sd);
     printf("%s\n", (err ? "Fail :(" : "OK"));
