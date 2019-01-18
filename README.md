@@ -26,7 +26,7 @@ mbed compile --target DISCO_L475VG_IOT01A --toolchain GCC_ARM --profile=uTensor/
 ```
 Compile successfully!
 ![alt text](https://github.com/moon412/mbed-dsc-e2e/blob/master/compile_output_011819.png)
-7) Flash to the board and run it with `mbed sterm -b 115200` or in Serial terminal.
+7) Flash to the board and run it with `mbed sterm -b 115200` or in Serial terminal. <br />
 8) Linear regression (lr model) and logistic regression (iris model) trained with synthesized data return accurate results!
 ![alt text](https://github.com/moon412/mbed-dsc-e2e/blob/master/lr_output_011819.png)
 9) Next step is to train linear or logistic regression with real data from sensors. And test out Pelion update and visualization in Pelion portal.
