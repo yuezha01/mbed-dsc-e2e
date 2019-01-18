@@ -15,7 +15,11 @@ mbed import https://www.github.com/BlackstoneEngineering/mbed-os-example-e2e-dem
 utensor-cli convert ./tensorflow-models/lr_model/lr_model.pb --output-nodes=y_pred
 ```
 4) Move `uTensor.lib` and folder `models` to folder `mbed-os-example-e2e-demo`. Replace `main.cpp` in `mbed-os-example-e2e-demo` with `main.cpp` in this repo.
-5) Run `mbed deploy`, this fetches the necessary libraries like uTensor
+5) `cd mbed-os-example-e2e-demo`. Run `mbed deploy`, this fetches the necessary libraries like uTensor
+6) Add folder `.update-certificates` if there isn't one. 
+```
+mbed dm init -a mbed_cloud_api_key -d "http://os.mbed.com" --model-name "modelname" -q --force
+```
 6) Compile model with Mbed OS
 ```
 mbed compile --target DISCO_L475VG_IOT01A --toolchain GCC_ARM --profile=uTensor/build_profile/release.json
