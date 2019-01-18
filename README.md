@@ -25,3 +25,4 @@ mbed dm init -a mbed_cloud_api_key -d "http://os.mbed.com" --model-name "modelna
 mbed compile --target DISCO_L475VG_IOT01A --toolchain GCC_ARM --profile=uTensor/build_profile/release.json
 ```
 7) Flash to the board and run it in Serial terminal. 
+8) Iris model and lr model return accurate values!
