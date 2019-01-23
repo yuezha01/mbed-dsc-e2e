@@ -6,27 +6,29 @@
 
 ## Instructions
 1) Import Mbed OS from this repo
-```model
+```
 mbed import https://www.github.com/BlackstoneEngineering/mbed-os-example-e2e-demo
 ```
-2) Use Jupyter Notebooks in folder `tensorflow-models` to train models in Tensorflow and save models in .pb files.
-3) Generate embedded C++ code with utensor-cli and save them in folder `models`
-```
-utensor-cli convert ./tensorflow-models/lr_model/lr_model.pb --output-nodes=y_pred
-```
-4) Move `uTensor.lib` and folder `models` to folder `mbed-os-example-e2e-demo`. Replace `main.cpp` in `mbed-os-example-e2e-demo` with `main.cpp` in this repo.
-5) `cd mbed-os-example-e2e-demo`. Run `mbed deploy`, this fetches the necessary libraries like uTensor
+2) Folder `models` already contrains C++ code for two models generated from uTensor. Don't need to train any model in Tensorflow. Move `uTensor.lib` and folder `models` to folder `mbed-os-example-e2e-demo`. 
+3) `cd mbed-os-example-e2e-demo`. Run `mbed deploy`, this fetches uTensor library. 
+4) Replace `main.cpp` in `mbed-os-example-e2e-demo` with `main.cpp` in this repo. In new `main.cpp`, a block of code is added at beginning of `int main(void)`to call uTensor models and return predictions. 
 6) Add folder `.update-certificates` if there isn't one. 
 ```
 mbed dm init -a mbed_cloud_api_key -d "http://os.mbed.com" --model-name "modelname" -q --force
 ```
-6) Compile model with Mbed OS
+6) Compile uTensor model with Mbed OS. 
 ```
 mbed compile --target DISCO_L475VG_IOT01A --toolchain GCC_ARM --profile=uTensor/build_profile/release.json
 ```
-Compile successfully!
-![alt text](https://github.com/moon412/mbed-dsc-e2e/blob/master/compile_output_011819.png)
+7) Compile successfully! `mbed-os-example-e2e-demo.bin` is the binary. 
+![alt text]()
 7) Flash to the board and run it with `mbed sterm -b 115200` or in Serial terminal. <br />
-8) Linear regression (lr model) and logistic regression (iris model) trained with synthesized data return accurate results!
+8) Linear regression (lr model) and logistic regression (iris model) trained with synthesized data return accurate results! Should be able to see iris model returns an integer 1 and lr model returns a float number 5.99xxx. 
 ![alt text](https://github.com/moon412/mbed-dsc-e2e/blob/master/lr_output_011819.png)
-9) Next step is to train linear or logistic regression with real data from sensors. And test out Pelion update and visualization in Pelion portal.
+9) Bug: can't register the device with Pelion.
+```
+[SMCC] Error occurred : MbedCloudClient::ConnectSecureConnectionFailed
+[SMCC] Error code : 11
+[SMCC] Error details : Client in reconnection mode SecureConnectionFailed
+```
+If compiling without uTensor and do `mbed compile --target DISCO_L475VG_IOT01A --toolchain GCC_ARM` without `release.json`, then there is no issue to connect and update with Pelion. 
