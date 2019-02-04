@@ -9,8 +9,8 @@
 ```
 mbed import https://www.github.com/BlackstoneEngineering/mbed-os-example-e2e-demo
 ```
-2) Folder `models` already contrains C++ code for two models generated from uTensor. Don't need to train any model in Tensorflow. Move `uTensor.lib` and folder `models` to folder `mbed-os-example-e2e-demo`. 
-3) `cd mbed-os-example-e2e-demo`. Run `mbed deploy`, this fetches uTensor library. 
+2) Folder `models` already contrains C++ code for two models generated from uTensor. Don't need to train any model in Tensorflow. Move folder `models` to folder `mbed-os-example-e2e-demo`. 
+3) In folder `mbed-os-example-e2e-demo`, `mbed add https://github.com/uTensor/uTensor/#c4250ffce8f5534b514eae1cf9a642f5a02f80d9`, this fetches uTensor library. 
 4) Replace `main.cpp` in `mbed-os-example-e2e-demo` with `main.cpp` in this repo. In new `main.cpp`, a block of code is added at beginning of `int main(void)`to call uTensor models and return predictions. 
 6) Add folder `.update-certificates` if there isn't one. 
 ```
