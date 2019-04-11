@@ -25,7 +25,7 @@ If need to fetch necessary libraries, `mbed deploy`
 ```
 mbed add https://github.com/uTensor/uTensor
 ```
-Or move `uTensor.lib` to the folder and `mbed deploy` 
+Or move `uTensor.lib` to the folder and `mbed deploy`. To have a better understanding of uTensor, [here](https://blog.hackster.io/simple-neural-network-on-mcus-a7cbd3dc108c) is a great blog to get started. 
 
 3) Use Jupyter Notebooks in folder `tensorflow-models` to train models in Tensorflow and save models in .pb files. <br />
 
