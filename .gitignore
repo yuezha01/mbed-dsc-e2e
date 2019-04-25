@@ -3,3 +3,7 @@ mnist-data/
 *.DS_Store
 *.pyc
 chkps/
+*.swp
+*.swo
+.*.swp
+.*.swo
