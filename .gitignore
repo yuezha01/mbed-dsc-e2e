@@ -3,3 +3,4 @@ mnist-data/
 *.DS_Store
 *.pyc
 chkps/
+constants/
