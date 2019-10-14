@@ -6,4 +6,4 @@ chkps*/
 *.swo
 *.pb
 ./ipynb_checkpoints/
-
+*.json
