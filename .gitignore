@@ -2,12 +2,8 @@
 mnist-data/
 *.DS_Store
 *.pyc
-chkps/
-<<<<<<< HEAD
-constants/
-=======
-*.swp
+chkps*/
 *.swo
-.*.swp
-.*.swo
->>>>>>> d7cf881b8111c4fbbbdcd0ec5ff33b9ec68a5c24
+*.pb
+./ipynb_checkpoints/
+
