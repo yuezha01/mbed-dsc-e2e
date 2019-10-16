@@ -6,6 +6,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 from tensorflow.python.framework import graph_util as gu
 from tensorflow.python.framework.graph_util import remove_training_nodes
 import json
+import pickle
 
 # load the dataset
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
@@ -17,24 +18,24 @@ pooling_ksize = [1, 2, 2, 1]
 pooling_strides = [1, 2, 2, 1]
 kernel_shape_1 = [5, 5, 1, 16]
 bias_shape_1 = [16]
-kernel_shape_2 = [5, 5, 16, 32]
-bias_shape_2 = [32]
-kernel_shape_3 = [5, 5, 32, 64]
-bias_shape_3 = [64]
-fc_neuron_1 = 128
+kernel_shape_2 = [5, 5, 16, 20]
+bias_shape_2 = [20]
+kernel_shape_3 = [5, 5, 20, 20]
+bias_shape_3 = [20]
+fc_neuron_1 = 10
 
 batch_size = 50
-n_epochs = 2
+n_epochs = 50
 n_batches = int(mnist.train.num_examples / batch_size)
-display_step = 10
+display_step = 1
 
-save_ckps_dir = "./saved_models/chkps_mnist_cnn/"
+save_chkp_dir = "./saved_models/chkps_mnist_cnn/"
 save_pb_dir = "./saved_models/pb_mnist_cnn/"
-chkp_fd_name = "chkp_config1/mnist_cnn"
-pb_file_name = "mnist_cnn_config1.pb"
+chkp_fd_name = "chkp_config4/mnist_cnn"
+pb_file_name = "mnist_cnn_config4.pb"
 training_dir = "./training_logs/"
-config_file_name = "training_config1.json"
-result_file_name = "training_log1.json"
+config_file_name = "training_config4.json"
+result_file_name = "training_log4.pickle"
 
 config = {"pooling_ksize": pooling_ksize,
           "pooling_strides": pooling_strides,
@@ -108,9 +109,12 @@ with tf.variable_scope("fc1") as scope:
     bias = tf.get_variable(name="bias", shape=[fc_neuron_1], dtype=tf.float32,
                            initializer=tf.contrib.layers.xavier_initializer(), trainable=True)
     fc = tf.matmul(pool3_flat, weights, name="matmul")
-    pre_activation = tf.add(fc, bias)
-    fc1 = tf.nn.relu(pre_activation, name="relu")
+    #pre_activation = tf.add(fc, bias)
+    #fc1 = tf.nn.relu(pre_activation, name="relu")
+    logits = tf.add(fc, bias, name="logits")
+    y_pred = tf.argmax(logits, axis=1, name="y_pred")
 
+"""
 print(weights)
 print(fc1)
 
@@ -122,10 +126,11 @@ with tf.variable_scope("fc2") as scope:
     fc = tf.matmul(fc1, weights, name="matmul")
     logits = tf.add(fc, bias, name="logits")
     y_pred = tf.argmax(logits, axis=1, name="y_pred")
-
+"""
 print(weights)
 print(logits)
 print(y_pred)
+
 
 with tf.name_scope("loss"):
     cross_entropy = tf.nn.softmax_cross_entropy_with_logits_v2(labels=y_, logits=logits, name="cross_entropy")
@@ -180,13 +185,15 @@ for i in range(n_epochs):
     if val_accuracy > max_accuracy:
         print("Save the current model!")
         max_accuracy = val_accuracy
-        saver.save(sess, save_ckps_dir + chkp_fd_name)
+        saver.save(sess, save_chkp_dir + chkp_fd_name)
     
     if (i+1) % display_step == 0:
         print('Epoch %d, training loss: %g, training accuracy: %g' % (i, train_loss, train_accuracy))
         print('Epoch %d, validation loss: %g, validation accuracy %g' % (i, val_loss, val_accuracy))
         
 
+# restore the best model
+saver.restore(sess, save_chkp_dir + chkp_fd_name)
 test_loss, test_accuracy =  sess.run([loss, accuracy], 
                                      feed_dict={x: mnist.test.images.reshape(mnist.test.num_examples, img_size, img_size, num_channels), 
                                                 y_: mnist.test.labels})
@@ -210,7 +217,12 @@ print('written graph to: %s' % graph_path)
 with open(training_dir+config_file_name, 'w') as f:
     json.dump(config, f)
 
-with open(training_dir+result_file_name, 'w') as f:
-    json.dump(config, f)
+with open(training_dir+result_file_name, 'wb') as handle:
+    pickle.dump(results, handle)
+with open(training_dir+result_file_name, 'rb') as handle:
+    data = pickle.load(handle)
+print(data)
+print("Done writing logs to json and pickle.")
+print("Close the session.")
     
 sess.close()

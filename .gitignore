@@ -7,3 +7,4 @@ chkps*/
 *.pb
 ./ipynb_checkpoints/
 *.json
+training_logs/
